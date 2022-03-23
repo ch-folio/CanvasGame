@@ -63,29 +63,34 @@ heartImage.onload = function () {
 };
 heartImage.src = "images/heart.png";
 
-// Black heart 1 image
-var obstacle1Ready = false;
-var obstacle1Image = new Image();
-obstacle1Image.onload = function () {
-    obstacle1Ready = true;
+// Black heart image
+var blackReady = false;
+var blackImage = new Image();
+blackImage.onload = function () {
+    blackReady = true;
 };
-obstacle1Image.src = "images/obstacle1.png"; 
+blackImage.src = "images/obstacle2.png"; 
 
-// Black heart 2 image
-var obstacle2Ready = false;
-var obstacle2Image = new Image();
-obstacle2Image.onload = function () {
-    obstacle2Ready = true;
+// Bad heart 1 image
+var badReady = false;
+var badImage = new Image();
+badImage.onload = function () {
+    badReady = true;
 };
-obstacle2Image.src = "images/obstacle2.png"; 
+badImage.src = "images/obstacle4.png"; 
 
-// Black heart 3 image
-var obstacle3Ready = false;
-var obstacle3Image = new Image();
-obstacle3Image.onload = function () {
-    obstacle3Ready = true;
+
+// Bad heart 2 image
+var badderReady = false;
+var badderImage = new Image();
+badderImage.onload = function () {
+    badderReady = true;
 };
-obstacle3Image.src = "images/obstacle3.png";
+badderImage.src = "images/obstacle5.png"; 
+
+
+
+
 
 // Game objects
 var cupid = {
@@ -93,25 +98,38 @@ var cupid = {
     x: 0,  // where on the canvas are they?
     y: 0  // where on the canvas are they?
 };
+
 var heart = {
-// for this version, the heart does not move, so just and x and y
+    // for this version, the heart does not move, so just and x and y
+        x: 0,
+        y: 0
+    };
+
+var black1 = {
     x: 0,
     y: 0
 };
-var obstacle1 = {
+var black2 = {
     x: 0,
     y: 0
 };
-var obstacle2 = {
+var black3 = {
     x: 0,
     y: 0
 };
-var obstacle3 = {
+var bad = {
     x: 0,
     y: 0
 };
-var heartsCaught = -1;
+var badder = {
+    x: 0,
+    y: 0
+};
+
+
+var heartsCaught = 0;
 let died = false;
+
 
 // Handle keyboard controls
 var keysDown = {
@@ -143,18 +161,20 @@ var reset = function () {
 
         placeItem(cupid);
         placeItem(heart);
-        placeItem(obstacle1);
-        placeItem(obstacle2);
-        placeItem(obstacle3);
+        placeItem(black1);
+        placeItem(black2);
+        placeItem(black3);
+        placeItem(bad);
+        placeItem(badder);
+
+    
 
         if(heartsCaught === 5) {
             alert("You won!");
             //change sound effect and play it. 
-            // soundEfx.src = soundGameOver;
-            // soundEfx.play();
+            soundEfx.src = soundGameOver;
+            soundEfx.play();
         }
-        
-
     }
   
 };
@@ -225,55 +245,72 @@ var update = function (modifier) {
             ++heartsCaught;       // keep track of our “score”
             reset();       // start a new cycle
         }
+ 
 
-        // if (
-        //     cupid.x+5 <= (obstacle1.x + 45)
-        //     && obstacle1.x <= (cupid.x + 100)
-        //     && cupid.y <= (obstacle1.y + 42)
-        //     && obstacle1.y <= (cupid.y + 90)
-        // ) {
-        //     gameOver()
-        // }
-        // if (
-        //     cupid.x+5 <= (obstacle2.x + 45)
-        //     && obstacle2.x <= (cupid.x + 100)
-        //     && cupid.y <= (obstacle2.y + 42)
-        //     && obstacle2.y <= (cupid.y + 90)
-        // ) {
-        //     gameOver()
-        // }
-        // if (
-        //     cupid.x+5 <= (obstacle3.x + 45)
-        //     && obstacle3.x <= (cupid.x + 100)
-        //     && cupid.y <= (obstacle3.y + 42)
-        //     && obstacle3.y <= (cupid.y + 90)
-        // ) {
-        //     gameOver()
-        // }
+        if (
+            cupid.x+5 <= (black1.x + 40)
+            && black1.x <= (cupid.x + 30)
+            && cupid.y <= (black1.y + 40)
+            && black1.y <= (cupid.y + 30)
+        ) {
+            gameOver()
+        }
+
+        if (
+            cupid.x+5 <= (black2.x + 40)
+            && black2.x <= (cupid.x + 30)
+            && cupid.y <= (black2.y + 40)
+            && black2.y <= (cupid.y + 30)
+        ) {
+            gameOver()
+        }
+
+        if (
+            cupid.x+5 <= (black3.x + 40)
+            && black3.x <= (cupid.x + 30)
+            && cupid.y <= (black3.y + 40)
+            && black3.y <= (cupid.y + 30)
+        ) {
+            gameOver()
+        }
+
+        if (
+            cupid.x+5 <= (bad.x + 40)
+            && bad.x <= (cupid.x + 30)
+            && cupid.y <= (bad.y + 40)
+            && bad.y <= (cupid.y + 30)
+        ) {
+            gameDone()
+        }
+
+        if (
+            cupid.x+5 <= (badder.x + 40)
+            && badder.x <= (cupid.x + 30)
+            && cupid.y <= (badder.y + 40)
+            && badder.y <= (cupid.y + 30)
+        ) {
+            gameDone()
+        }
 
    
 };
 
-// let gameOver = function() {
-//     alert("You've selected a black heart. GAME OVER.")
-//     died = true;
-//     reset();
-// }
+let gameOver = function() {
+    alert("You've selected a black heart. GAME OVER.")
+    died = true;
+    reset();
+}
+
+let gameDone = function() {
+    alert("You've selected a wounded heart. GAME OVER.")
+    died = true;
+    reset();
+}
 
 
 // Draw everything in the main render function
 var render = function () {
 
-    if (obstacle1Ready) {
-        ctx.drawImage(obstacle1Image, 0, 0); 
-        ctx.drawImage(obstacle1Image, 0, 0); 
-    }
-    if (obstacle2Ready) {
-        ctx.drawImage(obstacle2Image, obstacle2.x, obstacle2.y); 
-    }
-    if (obstacle3Ready) {
-        ctx.drawImage(obstacle3Image, obstacle3.x, obstacle3.y); 
-    }
 
     if (bgReady) {
         ctx.drawImage(bgImage, 0, 0); 
@@ -299,6 +336,21 @@ var render = function () {
         ctx.drawImage(heartImage, heart.x, heart.y);
     }
 
+    if (blackReady) {
+        ctx.drawImage(blackImage, black1.x, black1.y);
+        ctx.drawImage(blackImage, black2.x, black2.y);
+        ctx.drawImage(blackImage, black3.x, black3.y);
+    }
+
+    if (badReady) {
+        ctx.drawImage(badImage, bad.x, bad.y);
+    }
+
+    if (badderReady) {
+        ctx.drawImage(badderImage, badder.x, badder.y);
+        
+    }
+
         // Score
         ctx.fillStyle = "rgb(159, 30, 30)";
         ctx.font = "28px Segoe Script";
@@ -311,9 +363,12 @@ var render = function () {
         }
         else {
         ctx.fillText("Hearts stolen: " + heartsCaught, 32, 32);
-        }
 
+        }
+        
 };
+
+
 
 // The main game loop
 var main = function () {
@@ -332,5 +387,5 @@ var main = function () {
 
 // Let's play this game!
 var then = Date.now();
-//reset();
+reset();
 main();  // call the main game loop.
